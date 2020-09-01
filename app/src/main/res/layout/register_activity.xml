@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="20dp"
+        android:background="#FAFAFA"
+        android:backgroundTint="#FFFFFF">
+
+        <ImageView
+            android:id="@+id/register_log"
+            android:layout_width="match_parent"
+            android:layout_height="134dp"
+            android:background="@drawable/parknowlogo" />
+
+        <RelativeLayout
+            android:id="@+id/relName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/register_log"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:id="@+id/register_txt_name"
+                android:layout_width="94dp"
+                android:layout_height="23dp"
+                android:layout_alignRight="@id/name_continer"
+                android:text="@string/t_name"
+                android:textAlignment="textStart"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+
+            <EditText
+                android:id="@+id/name_continer"
+                android:layout_width="129dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/register_txt_name"
+                android:ems="10"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relFamilyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/register_log"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/relName">
+
+            <TextView
+                android:id="@+id/register_txt_familyname"
+                android:layout_width="94dp"
+                android:layout_height="23dp"
+                android:layout_alignRight="@id/femilyName_continer"
+                android:text="@string/t_femilyname"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <EditText
+
+                android:id="@+id/femilyName_continer"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/register_txt_familyname"
+                android:inputType="textPersonName" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relName"
+            android:layout_alignRight="@id/relName"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="94dp"
+                android:layout_height="23dp"
+                android:layout_alignRight="@id/register_container"
+                android:text="@string/t_username"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/register_container"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/userName"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relName"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:id="@+id/password"
+                android:layout_width="94dp"
+                android:layout_height="23dp"
+                android:layout_alignRight="@id/container_password"
+                android:text="@string/t_psw"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/container_password"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/password"
+                android:ems="10"
+                android:inputType="textPassword" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+
+            android:id="@+id/relEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relUserName"
+            android:layout_alignRight="@id/relUserName"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="94dp"
+                android:layout_height="23dp"
+                android:layout_alignRight="@id/container_email"
+                android:text="@string/t_meil"
+                android:textColor="#0B0B0B"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/container_email"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/email"
+                android:ems="10"
+                android:inputType="textEmailAddress" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+
+            android:id="@+id/relVerifyEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relEmail"
+            android:layout_alignRight="@id/relUserName"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:id="@+id/verifyEmail"
+                android:layout_width="94dp"
+                android:layout_height="23dp"
+                android:layout_alignRight="@id/container_verifyEmail"
+                android:text="@string/t_verfiy"
+                android:textColor="#0B0B0B"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/container_verifyEmail"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/verifyEmail"
+                android:ems="10"
+                android:inputType="textEmailAddress" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relLiscenece"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relVerifyEmail"
+            android:layout_alignRight="@id/relVerifyEmail"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/license_text"
+                android:layout_width="245dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="7dp"
+                android:layout_toRightOf="@id/image_liceane"
+                android:background="@drawable/edit_register_borser"
+                android:ems="10"
+                android:gravity="center"
+                android:text="@string/t_c_licence"
+                android:textAlignment="center" />
+
+
+            <ImageButton
+                android:id="@+id/image_liceane"
+                android:layout_width="52dp"
+
+                android:layout_height="56dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/takeimage"
+                android:scaleType="fitXY" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relId"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relLiscenece"
+            android:layout_alignRight="@id/relVerifyEmail"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/id_text"
+                android:layout_width="245dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="7dp"
+                android:layout_toRightOf="@id/image_id"
+                android:background="@drawable/edit_register_borser"
+                android:ems="10"
+                android:gravity="center"
+                android:inputType="none"
+                android:text="@string/t_id"
+                android:textAlignment="center" />
+
+
+            <ImageButton
+
+                android:id="@+id/image_id"
+                android:layout_width="52dp"
+                android:layout_height="56dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/takeimage"
+
+                android:scaleType="fitXY" />
+
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/b_register"
+            android:layout_width="109dp"
+            android:layout_height="54dp"
+            android:layout_below="@id/relId"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="68dp"
+            android:background="@android:color/holo_blue_light"
+            android:text="@string/b_reg"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</ScrollView>

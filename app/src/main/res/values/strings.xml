@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">ParkNow</string>
+    <string name="logo_app">TODO</string>
+    <string name="profitable_home">profitable</string>
+    <string name="easy_home">Easy</string>
+    <string name="fast_home">Fast</string>
+    <string name="home">Home</string>
+    <string name="home_log">home_log</string>
+    <string name="txt_home">Have you found parking already? Probably not</string>
+    <string name="start_now_home">Start Now</string>
+    <string name="sign_in_b">Alreay have an account.Sign In</string>
+    <string name="b_sign">Already have an account.Sign In</string>
+    <string name="b_register">צור חשבון חדש</string>
+    <string name="txt_home_">החנייה הכי מהירה שתמצא</string>
+    <string name="txt_sign">התחבר כ :</string>
+    <string name="logo">logo</string>
+    <string name="b_owner_sign">שוכר</string>
+    <string name="b_renter_sign">משכיר</string>
+    <string name="psw_enter">סיסמא</string>
+    <string name="txt_enter">שם משתמש</string>
+    <string name="sign_google">sign_google</string>
+    <string name="registerlogo">registerlogo</string>
+    <string name="register_lo">TODO</string>
+    <string name="t_id">תצלום תעודת זהות</string>
+    <string name="t_femilyname">:שם משפחה</string>
+    <string name="t_name">:שם</string>
+    <string name="t_username">שם משתמש:</string>
+    <string name="t_psw">סיסמא:</string>
+    <string name="t_meil">דואל:</string>
+    <string name="t_verfiy">ודא מייל:</string>
+    <string name="t_c_licence">תצלום תעודת רישון בתוקף</string>
+    <string name="b_reg">הרשמה</string>
+    <string name="b_connect">התחבר</string>
+    <string name="txt_forget">שכחת סיסמא?לחץ כאן.</string>
+    <string name="licence_photo_register">licence_photo</string>
+    <string name="image_rg">image</string>
+    <string name="username_c">username_c</string>
+    <string name="search_l">search_l</string>
+    <string name="b_s">חיפוש חנייה</string>
+    <string name="googel_maps_b">חיפוש באמצעות GOOGEL MAPS</string>
+    <string name="g_img">g_img</string>
+    <string name="w_img">w_img</string>
+    <string name="choose_time_start">בחר שעת התחלה</string>
+    <string name="choose_time_finish">בחר שעת סיום</string>
+    <string name="choose_date">בחר תאריך</string>
+    <string name="save_p">שמור חנייה</string>
+    <string name="c_b">c_b</string>
+    <string name="todo">TODO</string>
+    <string name="h_txt">כבר לא מבזבזים זמן בחיפוש חנייה, הירשמו ותתחילו להנות מחנייה מהירה ומשתלמת !</string>
+    <string name="parknow">יש לך חשבון בParkNow ? היכנס</string>
+    <string name="payment_logo">payment_logo</string>
+    <string name="owner_name">שם בעל הכרטיס:</string>
+    <string name="policy_logo">policy_logo</string>
+    <string name="text_1">מדיניות הפרטיות -ParkNow</string>
+    <string name="text_2">[עודכן לאחרונה אוגוסט, 2020]</string>
+    <string name="renter_logo">renter_logo</string>
+    <string name="renter_text">אם בבעלותך חנייה להשכרה ,השכר אותה למשתמשי המערכת וקבל תשלום מידיי</string>
+    <string name="renter_text_1">השכירו את החנייה הפרטית שלכם ותתחילו להרוויח כסף !</string>
+    <string name="renter_text_2">מה צריך לעשות ?</string>
+    <string name="renter_txt_2">1. הגדירו כתובת,שעה ותאריך להשכרה.</string>
+    <string name="renter_txt_3">2. הגדירו את תעריף החנייה השעתי.</string>
+    <string name="renter_txt_4">3. שתפו את מקום החנייה שלכם על המפה .</string>
+    <string name="b_rent">המשך ליצירת חנייה</string>
+    <string name="b_skip">!הבנתי</string>
+    <string name="b_search">חפש חנייה</string>
+    <string name="s_time">time</string>
+    <string-array name="users">
+        <item>שוכר</item>
+        <item>משכיר</item>
+    </string-array>
+
+</resources>

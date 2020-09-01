@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/relLayoutTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <RelativeLayout
+                android:id="@+id/relLayoutStartTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/relLayoutfinishTime">
+
+                <TextView
+                    android:id="@+id/pick_time_txt_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="9dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/button_border"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/choose_time_start"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+
+                <ImageView
+                    android:id="@+id/clock_bth"
+                    android:layout_width="47dp"
+                    android:layout_height="33dp"
+                    android:layout_below="@id/pick_time_txt_start"
+                    android:layout_alignLeft="@+id/pick_time_txt_start"
+                    android:layout_alignRight="@id/pick_time_txt_start"
+                    android:layout_marginTop="5dp"
+                    android:contentDescription="@string/c_b"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:srcCompat="@drawable/clock" />
+
+
+                <EditText
+                    android:id="@+id/time_dispkay"
+                    android:layout_width="113dp"
+                    android:layout_height="38dp"
+                    android:layout_below="@id/clock_bth"
+                    android:layout_alignLeft="@id/pick_time_txt_start"
+                    android:layout_alignRight="@id/pick_time_txt_start"
+                    android:autofillHints="@string/s_time"
+                    android:ems="10"
+                    android:inputType="time"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    tools:ignore="LabelFor" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+
+                android:id="@+id/relLayoutfinishTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/pick_time_txt_finish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="9dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/button_border"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/choose_time_finish"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+
+                <ImageView
+                    android:id="@+id/clock_bth_finish"
+                    android:layout_width="47dp"
+                    android:layout_height="33dp"
+                    android:layout_below="@id/pick_time_txt_finish"
+                    android:layout_alignLeft="@+id/pick_time_txt_finish"
+                    android:layout_alignRight="@id/pick_time_txt_finish"
+                    android:layout_marginTop="5dp"
+                    android:contentDescription="@string/c_b"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:srcCompat="@drawable/clock" />
+
+
+                <EditText
+                    android:id="@+id/time_dispkay_finish"
+                    android:layout_width="113dp"
+                    android:layout_height="38dp"
+                    android:layout_below="@id/clock_bth_finish"
+                    android:layout_alignLeft="@id/pick_time_txt_finish"
+                    android:layout_alignRight="@id/pick_time_txt_finish"
+                    android:autofillHints="@string/s_time"
+                    android:ems="10"
+                    android:inputType="time"
+                    android:textAlignment="center"
+                    android:textColor="#000000" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relLayoutDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relLayoutTime"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/pick_date_txt"
+                android:layout_width="105dp"
+                android:layout_height="33dp"
+                android:background="@drawable/button_border"
+                android:gravity="center"
+                android:text="@string/choose_date"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/calander_bth"
+                android:layout_width="47dp"
+                android:layout_height="33dp"
+                android:layout_below="@id/pick_date_txt"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/calendar"
+                android:contentDescription="@string/todo" />
+
+
+            <EditText
+                android:id="@+id/date_display"
+                android:layout_width="114dp"
+                android:layout_height="39dp"
+                android:layout_below="@id/calander_bth"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                tools:ignore="LabelFor" />
+
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/park_search"
+            android:layout_width="133dp"
+            android:layout_height="53dp"
+            android:layout_below="@+id/relLayoutDate"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/button_border"
+            android:text="@string/b_s"
+            android:textColor="#FFFCFC"
+            android:textSize="18sp" />
+
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_below="@+id/park_search"
+            tools:context=".MapsActivity" />
+
+
+    </RelativeLayout>
+
+
+</ScrollView>

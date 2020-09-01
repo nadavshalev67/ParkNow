@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/policy_pic"
+        android:layout_width="151dp"
+        android:layout_height="67dp"
+        app:srcCompat="@drawable/parknowlogo"
+        android:contentDescription="@string/policy_logo" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="623dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="ExtraText">
+
+            <TextView
+                android:id="@+id/p_policy"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:fontFamily="sans-serif"
+                android:hint="@string/text_1"
+                android:lineSpacingExtra="14sp"
+
+
+                android:textAlignment="center"
+                android:textColorHint="#000000"
+                android:textSize="14sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="581dp">
+
+                <TextView
+                    android:id="@+id/txt_2"
+                    android:layout_width="402dp"
+                    android:layout_height="47dp"
+                    android:paddingStart="50dp"
+                    android:paddingEnd="135dp"
+                    android:text="@string/text_2"
+                    android:textAlignment="textStart"
+                    android:textColor="#000000"
+                    android:textColorHint="#090909"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_3"
+                    android:layout_width="202dp"
+                    android:layout_height="112dp"
+                    android:text=""
+                    tools:layout_editor_absoluteX="116dp"
+                    tools:layout_editor_absoluteY="147dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
