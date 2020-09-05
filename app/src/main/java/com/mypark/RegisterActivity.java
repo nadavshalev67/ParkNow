@@ -4,11 +4,13 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,17 +40,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void initViews() {
         mName = findViewById(R.id.name_continer);
-        mName.setText("Nadav");
         mLastName = findViewById(R.id.femilyName_continer);
-        mLastName.setText("Nadav");
         mUserName = findViewById(R.id.register_container);
-        mUserName.setText("Nadav");
         mPassword = findViewById(R.id.container_password);
-        mPassword.setText("asdas1sad2");
         mEmail = findViewById(R.id.container_email);
-        mEmail.setText("asda@walla.com");
         mVerifyEmail = findViewById(R.id.container_verifyEmail);
-        mVerifyEmail.setText("asda@walla.com");
         mLicsncesButton = findViewById(R.id.license_text);
         mLicsncesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,51 +75,50 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void verifyAllEditText() {
-//        String userName = mUserName.getText().toString();
-//        if (TextUtils.isEmpty(userName) || isUserAlreadyRegistered()) {
-//            Toast.makeText(this, "Missing username / User name already exists", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        String name = mName.getText().toString();
-//        if (TextUtils.isEmpty(name)) {
-//            Toast.makeText(this, "Missing name", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        String lastName = mLastName.getText().toString();
-//        if (TextUtils.isEmpty(lastName)) {
-//            Toast.makeText(this, "Missing last name", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        String password = mPassword.getText().toString();
-//        if (!Utilites.isPasswordValid(password)) {
-//            Toast.makeText(this, "Password is not valid,Must contain digit and charcter", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        String email = mEmail.getText().toString();
-//        if (!Utilites.isEmailValid(email)) {
-//            Toast.makeText(this, "Email is not valid/ Already exists", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        String verifyEmail = mVerifyEmail.getText().toString();
-//        if (!TextUtils.equals(email, verifyEmail) || isEmailAlreadyExists()) {
-//            Toast.makeText(this, "Email should be the same", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        if (!TextUtils.equals((CharSequence) mImageLicence.getTag(), "Valid") && !TextUtils.equals((CharSequence) mImageLicence.getTag(), "Valid")) {
-//            Toast.makeText(this, "Empty ID/Licsence", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        String userName = mUserName.getText().toString();
+        if (TextUtils.isEmpty(userName) || isUserAlreadyRegistered()) {
+            Toast.makeText(this, "Missing username / User name already exists", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String name = mName.getText().toString();
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(this, "Missing name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String lastName = mLastName.getText().toString();
+        if (TextUtils.isEmpty(lastName)) {
+            Toast.makeText(this, "Missing last name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String password = mPassword.getText().toString();
+        if (!Utilites.isPasswordValid(password)) {
+            Toast.makeText(this, "Password is not valid,Must contain digit and charcter", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String email = mEmail.getText().toString();
+        if (!Utilites.isEmailValid(email)) {
+            Toast.makeText(this, "Email is not valid/ Already exists", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String verifyEmail = mVerifyEmail.getText().toString();
+        if (!TextUtils.equals(email, verifyEmail) || isEmailAlreadyExists()) {
+            Toast.makeText(this, "Email should be the same", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!TextUtils.equals((CharSequence) mImageLicence.getTag(), "Valid") && !TextUtils.equals((CharSequence) mImageLicence.getTag(), "Valid")) {
+            Toast.makeText(this, "Empty ID/Licsence", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
         Intent homeIntent = new Intent(RegisterActivity.this, HomeActivity.class);
         startActivity(homeIntent);
         finish();
-
     }
 
 

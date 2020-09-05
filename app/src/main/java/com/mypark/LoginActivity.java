@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent signInIntent = new Intent(LoginActivity.this, SignInActivity.class);
                 startActivity(signInIntent);
-                finish();
             }
         });
     }
