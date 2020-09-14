@@ -6,6 +6,8 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -15,9 +17,10 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent homeIntent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent homeIntent = new Intent(MainActivity.this, FirebaseAuth.getInstance().getCurrentUser() != null ? HomeActivity.class : LoginActivity.class);
                 startActivity(homeIntent);
                 finish();
+
             }
         }, 1500);
     }

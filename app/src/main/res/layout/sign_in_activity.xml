@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#FFF"
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
-    android:animationCache="true">
+    android:animationCache="true"
+    android:background="#FFF">
 
     <ImageView
         android:id="@+id/sign_in_logo"
@@ -18,18 +18,19 @@
         android:contentDescription="@string/logo" />
 
     <View
-        android:layout_marginTop="20dp"
         android:id="@+id/seperator"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/sign_in_logo"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:background="#C9C9C9" />
 
     <TextView
 
         android:id="@+id/txt_sign_user"
-        android:layout_width="97dp"
+        android:layout_width="wrap_content"
         android:layout_height="41dp"
         android:layout_below="@id/seperator"
         android:layout_alignParentRight="true"
@@ -39,8 +40,9 @@
         android:textSize="18sp" />
 
     <EditText
+        android:paddingLeft="5dp"
         android:id="@+id/username_enter_txt"
-        android:layout_width="185dp"
+        android:layout_width="wrap_content"
         android:layout_height="46dp"
         android:layout_below="@id/seperator"
         android:layout_marginRight="30dp"
@@ -52,7 +54,7 @@
 
     <TextView
         android:id="@+id/b_sign_psw"
-        android:layout_width="97dp"
+        android:layout_width="wrap_content"
         android:layout_height="41dp"
         android:layout_below="@id/txt_sign_user"
         android:layout_alignRight="@id/txt_sign_user"
@@ -64,8 +66,9 @@
 
 
     <EditText
+        android:paddingLeft="5dp"
         android:id="@+id/psw_enter_txt"
-        android:layout_width="185dp"
+        android:layout_width="wrap_content"
         android:layout_height="46dp"
         android:layout_below="@id/username_enter_txt"
         android:layout_alignTop="@id/b_sign_psw"
@@ -76,21 +79,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username_enter_txt" />
 
-
-    <!--<ImageButton-->
-    <!--android:id="@+id/google_sign_b"-->
-    <!--android:layout_width="211dp"-->
-    <!--android:layout_height="46dp"-->
-    <!--android:layout_marginEnd="24dp"-->
-    <!--android:layout_marginBottom="68dp"-->
-    <!--android:contentDescription="@string/sign_google"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintHorizontal_bias="1.0"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/psw_enter_txt"-->
-    <!--app:layout_constraintVertical_bias="0.607"-->
-    <!--app:srcCompat="@drawable/g_sign" />-->
 
     <Button
         android:id="@+id/reg_buttoun"

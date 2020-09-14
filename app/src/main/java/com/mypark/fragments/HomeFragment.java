@@ -39,8 +39,9 @@ public class HomeFragment extends Fragment {
         return mFragment;
     }
 
-    public void setListener(ActivitytFragmentListener activitytFragmentListener) {
-        mListener = activitytFragmentListener;
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        mListener = (ActivitytFragmentListener) getContext();
     }
 }

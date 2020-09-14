@@ -32,6 +32,12 @@ public class DetailsFragment extends Fragment {
         return mFragment;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mListener = (ActivitytFragmentListener) getContext();
+    }
+
     public void setListener(ActivitytFragmentListener activitytFragmentListener) {
         mListener = activitytFragmentListener;
     }

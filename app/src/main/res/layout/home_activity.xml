@@ -8,22 +8,37 @@
 
     <ImageView
         android:id="@+id/renter_logo"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@string/renter_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
         app:srcCompat="@drawable/parknowlogo" />
+
+    <Button
+        android:id="@+id/log_out_button"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/renter_logo"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/button_border"
+        android:text="Log out"
+        android:textColor="#FFFEFE"
+        android:textSize="10sp" />
+
+    <View
+        android:id="@+id/seperator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/log_out_button"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/gray" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/renter_logo" />
+        android:layout_below="@id/seperator"
+        android:layout_marginTop="5dp" />
 
 
 </RelativeLayout>

@@ -4,18 +4,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mypark.utilities.Utilites;
 
 public class SignInActivity extends AppCompatActivity {
 
-    EditText mUserName, mPassword;
+    EditText mEmail, mPassword;
     Button mConnectButton;
 
     @Override
@@ -26,7 +32,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mUserName = findViewById(R.id.username_enter_txt);
+        mEmail = findViewById(R.id.username_enter_txt);
         mPassword = findViewById(R.id.psw_enter_txt);
         mConnectButton = findViewById(R.id.reg_buttoun);
         mConnectButton.setOnClickListener(new View.OnClickListener() {
@@ -38,28 +44,33 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void verifyLoginDetails() {
-        String userName = mUserName.getText().toString();
+        String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
-        if (TextUtils.isEmpty(userName)) {
-            Toast.makeText(this, "Invalid username", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(email) || !Utilites.isEmailValid(email)) {
+            Toast.makeText(this, "Invalid email", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!Utilites.isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password) || !Utilites.isPasswordValid(password)) {
             Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT).show();
             return;
         }
-        ///
-        if (userExistsInDB()) {
-            Intent homeIntent = new Intent(SignInActivity.this, HomeActivity.class);
-            startActivity(homeIntent);
-            finish();
-        }
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Intent homeIntent = new Intent(SignInActivity.this, HomeActivity.class);
+                            homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(homeIntent);
+                            finish();
+                        } else {
+                            Toast toast = Toast.makeText(SignInActivity.this, "Invalid Email/Password", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                        }
 
-
-    }
-
-    private boolean userExistsInDB() {
-        return true;
-        //Make query to the db in order to take Username + password and it should be equal!!!!! to mUserName + mPassword
+                    }
+                });
     }
 }

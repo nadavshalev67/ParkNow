@@ -63,6 +63,12 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
         }
     };
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mListener = (ActivitytFragmentListener) getContext();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

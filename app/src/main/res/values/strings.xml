@@ -17,7 +17,7 @@
     <string name="b_owner_sign">שוכר</string>
     <string name="b_renter_sign">משכיר</string>
     <string name="psw_enter">סיסמא</string>
-    <string name="txt_enter">שם משתמש</string>
+    <string name="txt_enter">מייל</string>
     <string name="sign_google">sign_google</string>
     <string name="registerlogo">registerlogo</string>
     <string name="register_lo">TODO</string>
