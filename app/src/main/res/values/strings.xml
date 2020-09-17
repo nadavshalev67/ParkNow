@@ -37,12 +37,15 @@
     <string name="username_c">username_c</string>
     <string name="search_l">search_l</string>
     <string name="b_s">חיפוש חנייה</string>
+    <string name="b_c">צור חנייה</string>
     <string name="googel_maps_b">חיפוש באמצעות GOOGEL MAPS</string>
     <string name="g_img">g_img</string>
     <string name="w_img">w_img</string>
     <string name="choose_time_start">בחר שעת התחלה</string>
     <string name="choose_time_finish">בחר שעת סיום</string>
     <string name="choose_date">בחר תאריך</string>
+    <string name="choose_price">בחר מחיר</string>
+    <string name="choose_adress">בחר כתובת</string>
     <string name="save_p">שמור חנייה</string>
     <string name="c_b">c_b</string>
     <string name="todo">TODO</string>

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mypark.fragments.ActivitytFragmentListener;
+import com.mypark.fragments.CreateParkingFragment;
 import com.mypark.fragments.DetailsFragment;
 import com.mypark.fragments.HomeFragment;
 import com.mypark.fragments.SearchParkingFragment;
@@ -33,17 +34,17 @@ public class HomeActivity extends AppCompatActivity implements ActivitytFragment
 
     @Override
     public void onGotItClicked() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(), "home").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(), "home").addToBackStack(null).commit();
     }
 
     @Override
     public void onSearchParkingClicked() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchParkingFragment(), "search").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchParkingFragment(), "search").addToBackStack(null).commit();
     }
 
     @Override
     public void onCreateNewParakingClicked() {
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CreateParkingFragment(), "create").addToBackStack(null).commit();
     }
 
 

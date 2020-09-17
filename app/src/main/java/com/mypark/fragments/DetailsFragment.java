@@ -38,7 +38,4 @@ public class DetailsFragment extends Fragment {
         mListener = (ActivitytFragmentListener) getContext();
     }
 
-    public void setListener(ActivitytFragmentListener activitytFragmentListener) {
-        mListener = activitytFragmentListener;
-    }
 }
