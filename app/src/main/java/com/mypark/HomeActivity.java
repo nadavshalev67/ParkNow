@@ -47,5 +47,15 @@ public class HomeActivity extends AppCompatActivity implements ActivitytFragment
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CreateParkingFragment(), "create").addToBackStack(null).commit();
     }
 
+    @Override
+    public void onParkingCreated() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(), "home").addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onParkingRented() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(), "home").addToBackStack(null).commit();
+    }
+
 
 }

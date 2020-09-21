@@ -1,8 +1,14 @@
 package com.mypark.fragments;
 
 public interface ActivitytFragmentListener {
-    public void onGotItClicked();
-    public void onSearchParkingClicked();
-    public void onCreateNewParakingClicked();
+    void onGotItClicked();
+
+    void onSearchParkingClicked();
+
+    void onCreateNewParakingClicked();
+
+    void onParkingCreated();
+
+    void onParkingRented();
 
 }

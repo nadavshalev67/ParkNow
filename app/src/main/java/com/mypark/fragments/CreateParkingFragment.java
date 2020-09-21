@@ -1,16 +1,18 @@
 package com.mypark.fragments;
 
-
-import android.content.res.Configuration;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,34 +28,77 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mypark.R;
+import com.mypark.utilities.Defines;
 import com.mypark.utilities.Utilites;
 import com.mypark.utilities.WorkaroundMapFragment;
 
 import java.util.Arrays;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class CreateParkingFragment extends Fragment implements OnMapReadyCallback {
+public class CreateParkingFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private View mFragment;
+    private Button mCreateButton;
     private ActivitytFragmentListener mListener;
     private GoogleMap mGoogleMap;
-    private ImageView mStartTimeButton, mFinishTimeButton, mCalander;
-    private EditText mDateDisplay, mStartTimeDisplay, mFinishTimeDisplay, mAdress;
-    private LatLng tlvLocation = new LatLng(32.083010, 34.779690);
+    private EditText mStartTimeDisplay, mFinishTimeDisplay, mPrice;
     private LatLng mLastChosenLocation = null;
     private AutocompleteSupportFragment mAutocompleteSupportFragment;
+
+    //Firebase
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragment = inflater.inflate(R.layout.create_parking_fragment, container, false);
-        initDateAndTime();
+        mPrice = mFragment.findViewById(R.id.price_edit_text);
+        initTimers();
+        initCreateButton();
         Utilites.initGoogleMaps(mGoogleMap, (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map), this);
         initGoogleSearchBar();
         return mFragment;
+    }
+
+    private void initCreateButton() {
+        mCreateButton = mFragment.findViewById(R.id.park_create);
+        mCreateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(mPrice.getText().toString()) || TextUtils.isEmpty(mStartTimeDisplay.getText().toString()) || TextUtils.isEmpty(mFinishTimeDisplay.getText().toString()) || mLastChosenLocation == null) {
+                    Toast.makeText(getContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                final Map<String, Object> mDetailsMap = new HashMap<>();
+                mDetailsMap.put(Defines.TableFields.PARKING_CREATE_START_TIME, mStartTimeDisplay.getText().toString());
+                mDetailsMap.put(Defines.TableFields.PARKING_CREATE_FINISH_TIME, mFinishTimeDisplay.getText().toString());
+                mDetailsMap.put(Defines.TableFields.PARKING_CREATE_LOCATION_LAT, mLastChosenLocation.latitude);
+                mDetailsMap.put(Defines.TableFields.PARKING_CREATE_LOCATION_LNG, mLastChosenLocation.longitude);
+                mDetailsMap.put(Defines.TableFields.PARKING_CREATE_PRICE, mPrice.getText().toString());
+                mDatabase.child(Defines.TableNames.PARKING_CREATE).child(mAuth.getCurrentUser().getUid()).child(String.valueOf(mLastChosenLocation.hashCode())).setValue(mDetailsMap, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                        if (error != null) {
+                            Toast.makeText(getContext(), "Error when saving the details", Toast.LENGTH_SHORT).show();
+                            return;
+                        } else {
+                            Toast.makeText(getContext(), "Parking created", Toast.LENGTH_SHORT).show();
+                            mListener.onParkingCreated();
+                        }
+                    }
+                });
+
+            }
+        });
     }
 
 
@@ -63,42 +108,17 @@ public class CreateParkingFragment extends Fragment implements OnMapReadyCallbac
         mListener = (ActivitytFragmentListener) getContext();
     }
 
-    private void initDateAndTime() {
-        mDateDisplay = mFragment.findViewById(R.id.date_display);
+    private void initTimers() {
         mStartTimeDisplay = mFragment.findViewById(R.id.time_dispkay);
-        mStartTimeButton = mFragment.findViewById(R.id.clock_bth);
         mFinishTimeDisplay = mFragment.findViewById(R.id.time_dispkay_finish);
-        mFinishTimeButton = mFragment.findViewById(R.id.clock_bth_finish);
-        mStartTimeDisplay.setKeyListener(null);
-        mFinishTimeDisplay.setKeyListener(null);
-        Utilites.setCalendearButton(mFragment.findViewById(R.id.calander_bth), getContext(), mDateDisplay);
-        Utilites.setTimes(getContext(), mStartTimeButton, mStartTimeDisplay, mFinishTimeButton, mFinishTimeDisplay);
+        Utilites.setTimes(getContext(), (ImageView) mFragment.findViewById(R.id.clock_bth), mStartTimeDisplay, (ImageView) mFragment.findViewById(R.id.clock_bth_finish), mFinishTimeDisplay);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         if (mGoogleMap == null) {
             mGoogleMap = googleMap;
-            mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng point) {
-                    mLastChosenLocation = point;
-                    mGoogleMap.clear();
-                    Log.d("nadav", Utilites.getCompleteAddressString(getContext(), point.latitude, point.longitude));
-                    mGoogleMap.addMarker(new MarkerOptions().position(point));
-                    mAutocompleteSupportFragment.setText(Utilites.getCompleteAddressString(getContext(), point.latitude, point.longitude));
-                }
-            });
-            mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tlvLocation, 10));
-            final ScrollView mScrollView = mFragment.findViewById(R.id.scrollview);
-            ((WorkaroundMapFragment) getChildFragmentManager().findFragmentById(R.id.map))
-                    .setListener(new WorkaroundMapFragment.OnTouchListener() {
-                        @Override
-                        public void onTouch() {
-                            mScrollView.requestDisallowInterceptTouchEvent(true);
-                        }
-                    });
+            Utilites.setDefaultSettingToGogleMaps(googleMap, (WorkaroundMapFragment) getChildFragmentManager().findFragmentById(R.id.map), (ScrollView) mFragment.findViewById(R.id.scrollview), this);
         }
     }
 
@@ -109,16 +129,24 @@ public class CreateParkingFragment extends Fragment implements OnMapReadyCallbac
             @Override
             public void onPlaceSelected(Place place) {
                 LatLng point = place.getLatLng();
-                Log.d("nadav", Utilites.getCompleteAddressString(getContext(), point.latitude, point.longitude));
+                mLastChosenLocation = point;
+                mGoogleMap.clear();
                 mGoogleMap.addMarker(new MarkerOptions().position(point));
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 30));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 20));
             }
-
 
             @Override
             public void onError(Status status) {
-                Log.d("nadav", status.toString());
             }
         });
     }
+
+    @Override
+    public void onMapClick(LatLng point) {
+        mLastChosenLocation = point;
+        mGoogleMap.clear();
+        mGoogleMap.addMarker(new MarkerOptions().position(point));
+        mAutocompleteSupportFragment.setText(Utilites.getCompleteAddressString(getContext(), point.latitude, point.longitude));
+    }
+
 }

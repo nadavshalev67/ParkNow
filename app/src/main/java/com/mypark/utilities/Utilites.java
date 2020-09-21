@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -34,6 +36,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.mypark.R;
+import com.mypark.fragments.CreateParkingFragment;
 import com.mypark.fragments.SearchParkingFragment;
 
 import java.io.ByteArrayOutputStream;
@@ -106,14 +109,37 @@ public class Utilites {
 
 
     public static void setTimes(final Context context, ImageView mStartTimeButton, final EditText mStartTimeDisplay, ImageView mFinishTimeButton, final EditText mFinishTimeDisplay) {
+        mStartTimeDisplay.setKeyListener(null);
+        mFinishTimeDisplay.setKeyListener(null);
         final AtomicBoolean isStart = new AtomicBoolean(false);
         final Calendar cal = Calendar.getInstance();
         final TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String time = String.format("%02d", hourOfDay) + ":00";
+                String calcultedMinutes;
+                if (minute <= 15) {
+                    calcultedMinutes = "00";
+                } else if (minute <= 45) {
+                    calcultedMinutes = "30";
+                } else {
+                    calcultedMinutes = "00";
+                    hourOfDay++;
+                }
+
+                String time = String.format("%02d:%s", hourOfDay, calcultedMinutes);
                 if (isStart.get()) {
-                    mStartTimeDisplay.setText(time);
+                    String finishTime = mFinishTimeDisplay.getText().toString();
+                    if (TextUtils.isEmpty(finishTime)) {
+                        mStartTimeDisplay.setText(time);
+                    } else {
+                        int hoursFinishTime = Integer.valueOf(finishTime.substring(0, 2));
+                        if (hourOfDay >= hoursFinishTime) {
+                            Toast.makeText(context, "Please choose valid hour", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        mStartTimeDisplay.setText(time);
+                    }
+
                 } else {
                     int startTime = Integer.valueOf(mStartTimeDisplay.getText().toString().substring(0, 2));
                     if (hourOfDay <= startTime) {
@@ -177,4 +203,20 @@ public class Utilites {
     }
 
 
+    public static void setDefaultSettingToGogleMaps(GoogleMap googleMap, WorkaroundMapFragment workaroundMapFragment, final ScrollView scrollView, CreateParkingFragment listener) {
+        googleMap.setOnMapClickListener(listener);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Defines.Location.tlvLocation, 10));
+        workaroundMapFragment.setListener(new WorkaroundMapFragment.OnTouchListener() {
+            @Override
+            public void onTouch() {
+                scrollView.requestDisallowInterceptTouchEvent(true);
+            }
+        });
+    }
+
+
+    public static int getHours(String clock) {
+        return Integer.valueOf(clock.substring(0, 2));
+    }
 }

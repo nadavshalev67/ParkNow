@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
@@ -55,7 +56,7 @@
                 <EditText
                     android:id="@+id/time_dispkay"
                     android:layout_width="113dp"
-                    android:layout_height="38dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/clock_bth"
                     android:layout_alignLeft="@id/pick_time_txt_start"
                     android:layout_alignRight="@id/pick_time_txt_start"
@@ -107,7 +108,7 @@
                 <EditText
                     android:id="@+id/time_dispkay_finish"
                     android:layout_width="113dp"
-                    android:layout_height="38dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/clock_bth_finish"
                     android:layout_alignLeft="@id/pick_time_txt_finish"
                     android:layout_alignRight="@id/pick_time_txt_finish"
@@ -121,71 +122,52 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/relLayoutDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/relLayoutTime"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:id="@+id/pick_date_txt"
-                android:layout_width="105dp"
-                android:layout_height="33dp"
-                android:background="@drawable/button_border"
-                android:gravity="center"
-                android:text="@string/choose_date"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:id="@+id/calander_bth"
-                android:layout_width="47dp"
-                android:layout_height="33dp"
-                android:layout_below="@id/pick_date_txt"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/calendar"
-                android:contentDescription="@string/todo" />
-
-
-            <EditText
-                android:id="@+id/date_display"
-                android:layout_width="114dp"
-                android:layout_height="39dp"
-                android:layout_below="@id/calander_bth"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                tools:ignore="LabelFor" />
-
-
-        </RelativeLayout>
 
         <Button
             android:id="@+id/park_search"
             android:layout_width="133dp"
             android:layout_height="53dp"
-            android:layout_below="@+id/relLayoutDate"
+            android:layout_below="@+id/relLayoutTime"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="24dp"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="50dp"
+
             android:background="@drawable/button_border"
             android:text="@string/b_s"
             android:textColor="#FFFCFC"
             android:textSize="18sp" />
 
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/park_search"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@id/park_search"
+            android:visibility="invisible" />
+
         <fragment
             android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:name="com.mypark.utilities.WorkaroundMapFragment"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:layout_below="@+id/park_search"
+            android:layout_below="@+id/progress_bar"
             tools:context=".MapsActivity" />
+
+        <Button
+            android:id="@+id/park_serach_create"
+            android:layout_width="133dp"
+            android:layout_height="53dp"
+            android:layout_below="@+id/map"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="30dp"
+
+            android:background="@drawable/button_border"
+            android:text="@string/b_c"
+            android:textColor="#FFFCFC"
+            android:textSize="18sp" />
 
 
     </RelativeLayout>
