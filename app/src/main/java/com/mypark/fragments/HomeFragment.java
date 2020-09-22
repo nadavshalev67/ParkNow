@@ -15,27 +15,12 @@ import com.mypark.R;
 public class HomeFragment extends Fragment {
 
     private View mFragment;
-    private Button mSearchButton, mCreateButton;
     private ActivitytFragmentListener mListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragment = inflater.inflate(R.layout.home_fragment, container, false);
-        mCreateButton = mFragment.findViewById(R.id.createParking);
-        mCreateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onCreateNewParakingClicked();
-            }
-        });
-        mSearchButton = mFragment.findViewById(R.id.searchParking);
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onSearchParkingClicked();
-            }
-        });
         return mFragment;
     }
 
