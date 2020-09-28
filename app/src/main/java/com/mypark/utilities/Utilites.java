@@ -116,17 +116,7 @@ public class Utilites {
         final TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String calcultedMinutes;
-                if (minute <= 15) {
-                    calcultedMinutes = "00";
-                } else if (minute <= 45) {
-                    calcultedMinutes = "30";
-                } else {
-                    calcultedMinutes = "00";
-                    hourOfDay++;
-                }
-
-                String time = String.format("%02d:%s", hourOfDay, calcultedMinutes);
+                String time = String.format("%02d:00", hourOfDay);
                 if (isStart.get()) {
                     String finishTime = mFinishTimeDisplay.getText().toString();
                     if (TextUtils.isEmpty(finishTime)) {

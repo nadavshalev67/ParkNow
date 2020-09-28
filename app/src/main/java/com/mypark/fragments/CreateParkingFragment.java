@@ -29,17 +29,23 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mypark.R;
+import com.mypark.network.RetrofitInst;
 import com.mypark.utilities.Defines;
 import com.mypark.utilities.Utilites;
 import com.mypark.utilities.WorkaroundMapFragment;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class CreateParkingFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
@@ -51,7 +57,7 @@ public class CreateParkingFragment extends Fragment implements OnMapReadyCallbac
     private EditText mStartTimeDisplay, mFinishTimeDisplay, mPrice;
     private LatLng mLastChosenLocation = null;
     private AutocompleteSupportFragment mAutocompleteSupportFragment;
-
+    private String mUserName;
     //Firebase
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -62,11 +68,27 @@ public class CreateParkingFragment extends Fragment implements OnMapReadyCallbac
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragment = inflater.inflate(R.layout.create_parking_fragment, container, false);
         mPrice = mFragment.findViewById(R.id.price_edit_text);
+        getUserName();
         initTimers();
         initCreateButton();
         Utilites.initGoogleMaps(mGoogleMap, (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map), this);
         initGoogleSearchBar();
         return mFragment;
+    }
+
+    private void getUserName() {
+        mDatabase.child(Defines.TableNames.USERS).child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mUserName = (String) ((HashMap) snapshot.getValue()).get(Defines.TableFields.USERS_USERNAME);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     private void initCreateButton() {
@@ -78,25 +100,28 @@ public class CreateParkingFragment extends Fragment implements OnMapReadyCallbac
                     Toast.makeText(getContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                final Map<String, Object> mDetailsMap = new HashMap<>();
-                mDetailsMap.put(Defines.TableFields.PARKING_CREATE_START_TIME, mStartTimeDisplay.getText().toString());
-                mDetailsMap.put(Defines.TableFields.PARKING_CREATE_FINISH_TIME, mFinishTimeDisplay.getText().toString());
-                mDetailsMap.put(Defines.TableFields.PARKING_CREATE_LOCATION_LAT, mLastChosenLocation.latitude);
-                mDetailsMap.put(Defines.TableFields.PARKING_CREATE_LOCATION_LNG, mLastChosenLocation.longitude);
-                mDetailsMap.put(Defines.TableFields.PARKING_CREATE_PRICE, mPrice.getText().toString());
-                mDatabase.child(Defines.TableNames.PARKING_CREATE).child(mAuth.getCurrentUser().getUid()).child(String.valueOf(mLastChosenLocation.hashCode())).setValue(mDetailsMap, new DatabaseReference.CompletionListener() {
+                final HashMap<String, Object> detailsMap = new HashMap<>();
+                detailsMap.put("start_time", mStartTimeDisplay.getText().toString().substring(0, 2));
+                detailsMap.put("finish_time", mFinishTimeDisplay.getText().toString().substring(0, 2));
+                detailsMap.put("lat", mLastChosenLocation.latitude);
+                detailsMap.put("lng", mLastChosenLocation.longitude);
+                detailsMap.put("price", mPrice.getText().toString());
+                detailsMap.put("user_name", mUserName);
+                detailsMap.put("uuid", mAuth.getCurrentUser().getUid());
+                detailsMap.put("adress", Utilites.getCompleteAddressString(getContext(), mLastChosenLocation.latitude, mLastChosenLocation.longitude));
+                Call<Void> createCall = RetrofitInst.getInstance().executeCreateNewSpot(detailsMap);
+                createCall.enqueue(new Callback<Void>() {
                     @Override
-                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        if (error != null) {
-                            Toast.makeText(getContext(), "Error when saving the details", Toast.LENGTH_SHORT).show();
-                            return;
-                        } else {
-                            Toast.makeText(getContext(), "Parking created", Toast.LENGTH_SHORT).show();
-                            mListener.onParkingCreated();
-                        }
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(getContext(), "Parking created", Toast.LENGTH_SHORT).show();
+                        mListener.onParkingCreated();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(getContext(), "Error when saving the details", Toast.LENGTH_SHORT).show();
                     }
                 });
-
             }
         });
     }

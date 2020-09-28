@@ -30,7 +30,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mypark.R;
+import com.mypark.models.AvaliableParking;
 import com.mypark.models.Spot;
+import com.mypark.network.RetrofitInterface;
 import com.mypark.utilities.Defines;
 import com.mypark.utilities.Utilites;
 import com.mypark.utilities.WorkaroundMapFragment;
@@ -41,7 +43,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class SearchParkingFragment extends Fragment implements OnMapReadyCallback {
+
+
+    private RetrofitInterface mRetrofitInterface;
+
 
     private View mFragment;
     private GoogleMap mGoogleMap;
@@ -61,6 +73,7 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragment = inflater.inflate(R.layout.search_parking, container, false);
+
         initViews();
         return mFragment;
     }
@@ -111,62 +124,6 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
                 isValidSearch = true;
                 mProgressBar.setVisibility(View.VISIBLE);
 
-                final List<Spot> spotsBetweenSettedHours = new ArrayList<>();
-                mDatabase.child(Defines.TableNames.PARKING_CREATE).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot user : snapshot.getChildren()) {
-                            String userName = usersKey.get(user.getKey());
-                            for (DataSnapshot spots : user.getChildren()) {
-                                Double lng = (Double) ((HashMap) spots.getValue()).get(Defines.TableFields.PARKING_CREATE_LOCATION_LNG);
-                                Double lat = (Double) ((HashMap) spots.getValue()).get(Defines.TableFields.PARKING_CREATE_LOCATION_LAT);
-                                String price = (String) ((HashMap) spots.getValue()).get(Defines.TableFields.PARKING_CREATE_PRICE);
-                                String startTime = (String) ((HashMap) spots.getValue()).get(Defines.TableFields.PARKING_CREATE_START_TIME);
-                                String finishTime = (String) ((HashMap) spots.getValue()).get(Defines.TableFields.PARKING_CREATE_FINISH_TIME);
-                                if (Utilites.getHours(mStartTimeDisplay.getText().toString()) >= Utilites.getHours(startTime) && Utilites.getHours(mFinishTimeDisplay.getText().toString()) <= Utilites.getHours(finishTime)) {
-                                    spotsBetweenSettedHours.add(new Spot(new LatLng(lat, lng), userName, Integer.parseInt(price), spots.getKey()));
-                                }
-                            }
-                        }
-                        mDatabase.child(Defines.TableNames.PARKING_OCCUPIED).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                List<Spot> spotsToDelete = new ArrayList<>();
-                                for (Spot spot : spotsBetweenSettedHours) {
-                                    if (snapshot.hasChild(spot.getHashCode())) {
-                                        for (DataSnapshot dataSnapshot : snapshot.child(spot.getHashCode()).getChildren()) {
-                                            String startTime = (String) ((HashMap) dataSnapshot.getValue()).get(Defines.TableFields.PARKING_CREATE_START_TIME);
-                                            String finishTime = (String) ((HashMap) dataSnapshot.getValue()).get(Defines.TableFields.PARKING_CREATE_FINISH_TIME);
-                                            if (Utilites.getHours(mFinishTimeDisplay.getText().toString()) < Utilites.getHours(startTime) || Utilites.getHours(mStartTimeDisplay.getText().toString()) > Utilites.getHours(finishTime)) {
-                                                //it's good
-                                            } else {
-                                                spotsToDelete.add(spot);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                                CopyOnWriteArrayList lastFreeSpots = new CopyOnWriteArrayList(spotsBetweenSettedHours);
-                                for (Spot spot : spotsToDelete) {
-                                    lastFreeSpots.remove(spot);
-                                }
-                                onSpotsUpdated(lastFreeSpots);
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
 
             }
         });
@@ -205,42 +162,24 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
     }
 
     private void showAllSpotsAvialable() {
-        mDatabase.child(Defines.TableNames.USERS).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+
+        Call<List<AvaliableParking>> call = mRetrofitInterface.executeGetAvaialbeParking(new HashMap<String, String>());
+        call.enqueue(new Callback<List<AvaliableParking>>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot user : snapshot.getChildren()) {
-                    try {
-                        usersKey.put(user.getKey(), (String) ((HashMap) user.getValue()).get(Defines.TableFields.USERS_USERNAME));
-                    } catch (Exception ignored) {
-                    }
-
+            public void onResponse(Call<List<AvaliableParking>> call, Response<List<AvaliableParking>> response) {
+                if (response.code() == 200) {
+                    List<AvaliableParking> list = response.body();
+                    Toast.makeText(getContext(), " good", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "not good", Toast.LENGTH_SHORT).show();
                 }
-                final List<Spot> allSpots = new ArrayList<>();
-                mDatabase.child(Defines.TableNames.PARKING_CREATE).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot user : dataSnapshot.getChildren()) {
-                            String userName = usersKey.get(user.getKey());
-                            for (DataSnapshot spots : user.getChildren()) {
-                                Double lng = (Double) ((HashMap) spots.getValue()).get(Defines.TableFields.PARKING_CREATE_LOCATION_LNG);
-                                Double lat = (Double) ((HashMap) spots.getValue()).get(Defines.TableFields.PARKING_CREATE_LOCATION_LAT);
-                                String price = (String) ((HashMap) spots.getValue()).get(Defines.TableFields.PARKING_CREATE_PRICE);
-                                allSpots.add(new Spot(new LatLng(lat, lng), userName, Integer.parseInt(price), spots.getKey()));
-                            }
-                        }
-                        onSpotsUpdated(allSpots);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
-
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onFailure(Call<List<AvaliableParking>> call, Throwable t) {
+                Toast.makeText(getContext(), "not good", Toast.LENGTH_SHORT).show();
             }
         });
 
