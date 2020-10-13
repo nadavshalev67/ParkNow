@@ -24,30 +24,23 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.mypark.R;
 import com.mypark.models.AvaliableParking;
-import com.mypark.models.Spot;
 import com.mypark.network.RetrofitInterface;
 import com.mypark.utilities.Defines;
 import com.mypark.utilities.Utilites;
 import com.mypark.utilities.WorkaroundMapFragment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class SearchParkingFragment extends Fragment implements OnMapReadyCallback {
 
@@ -59,7 +52,7 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
     private GoogleMap mGoogleMap;
     private EditText mStartTimeDisplay, mFinishTimeDisplay;
     private Button mSearchingButton, mCreateButton;
-    private HashMap<String, String> usersKey = new HashMap<>();
+
     private ProgressBar mProgressBar;
     private ActivitytFragmentListener mListener;
     private boolean isValidSearch = false;
@@ -73,7 +66,6 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragment = inflater.inflate(R.layout.search_parking, container, false);
-
         initViews();
         return mFragment;
     }
@@ -123,6 +115,10 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
                 }
                 isValidSearch = true;
                 mProgressBar.setVisibility(View.VISIBLE);
+                HashMap<String, String> params = new HashMap<>();
+                params.put("Start_time", mStartTimeDisplay.getText().toString().substring(0, 2));
+                params.put("Finish_time", mStartTimeDisplay.getText().toString().substring(0, 2));
+                requestSpotsAvialbleList(params);
 
 
             }
@@ -151,7 +147,7 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
         });
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Defines.Location.tlvLocation, 10));
         googleMap.getUiSettings().setZoomControlsEnabled(true);
-        showAllSpotsAvialable();
+        requestSpotsAvialbleList(new HashMap<String, String>());
         ((WorkaroundMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).setListener(new WorkaroundMapFragment.OnTouchListener() {
             @Override
             public void onTouch() {
@@ -161,17 +157,16 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
 
     }
 
-    private void showAllSpotsAvialable() {
-
-
-
-        Call<List<AvaliableParking>> call = mRetrofitInterface.executeGetAvaialbeParking(new HashMap<String, String>());
+    private void requestSpotsAvialbleList(HashMap<String, String> params) {
+        Call<List<AvaliableParking>> call = mRetrofitInterface.executeGetAvaialbeParking(params);
+        mProgressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<List<AvaliableParking>>() {
             @Override
             public void onResponse(Call<List<AvaliableParking>> call, Response<List<AvaliableParking>> response) {
+                mProgressBar.setVisibility(View.INVISIBLE);
                 if (response.code() == 200) {
                     List<AvaliableParking> list = response.body();
-                    Toast.makeText(getContext(), " good", Toast.LENGTH_SHORT).show();
+                    onSpotsUpdated(list);
                 } else {
                     Toast.makeText(getContext(), "not good", Toast.LENGTH_SHORT).show();
                 }
@@ -179,17 +174,19 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
 
             @Override
             public void onFailure(Call<List<AvaliableParking>> call, Throwable t) {
+                mProgressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(getContext(), "not good", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void onSpotsUpdated(List<Spot> spots) {
+    private void onSpotsUpdated(List<AvaliableParking> avaliableParkings) {
         mProgressBar.setVisibility(View.INVISIBLE);
         mGoogleMap.clear();
-        for (Spot spot : spots) {
-            mGoogleMap.addMarker(new MarkerOptions().position(spot.getLatLng()).title(spot.getUserName()).snippet(String.format("Price : %d", spot.getPrice()))).setTag(spot.getHashCode());
+        for (AvaliableParking avaliableParking : avaliableParkings) {
+            mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(avaliableParking.lat, avaliableParking.lng)).title(avaliableParking.adress).snippet(String.format("Price : %d", avaliableParking.price))
+                    .title(avaliableParking.username)).setTag(avaliableParking);
         }
     }
 }
