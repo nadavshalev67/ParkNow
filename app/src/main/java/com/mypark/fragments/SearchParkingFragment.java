@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mypark.R;
 import com.mypark.models.AvaliableParking;
+import com.mypark.network.RetrofitInst;
 import com.mypark.network.RetrofitInterface;
 import com.mypark.utilities.Defines;
 import com.mypark.utilities.Utilites;
@@ -44,8 +45,7 @@ import retrofit2.Response;
 
 public class SearchParkingFragment extends Fragment implements OnMapReadyCallback {
 
-
-    private RetrofitInterface mRetrofitInterface;
+    ;
 
 
     private View mFragment;
@@ -158,7 +158,7 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
     }
 
     private void requestSpotsAvialbleList(HashMap<String, String> params) {
-        Call<List<AvaliableParking>> call = mRetrofitInterface.executeGetAvaialbeParking(params);
+        Call<List<AvaliableParking>> call = RetrofitInst.getInstance().executeGetAvaialbeParking(params);
         mProgressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<List<AvaliableParking>>() {
             @Override
