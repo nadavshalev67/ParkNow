@@ -108,7 +108,7 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
 
 
                 } else {
-                    Toast.makeText(getContext(), "Please choose valid place", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please choose valid hours and press on serach", Toast.LENGTH_SHORT).show();
                 }
             }
         });
