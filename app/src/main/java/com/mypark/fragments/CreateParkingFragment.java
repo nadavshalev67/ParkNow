@@ -101,8 +101,8 @@ public class CreateParkingFragment extends Fragment implements OnMapReadyCallbac
                     return;
                 }
                 final HashMap<String, Object> detailsMap = new HashMap<>();
-                detailsMap.put("start_time", mStartTimeDisplay.getText().toString().substring(0, 2));
-                detailsMap.put("finish_time", mFinishTimeDisplay.getText().toString().substring(0, 2));
+                detailsMap.put("start_time", Integer.valueOf(mStartTimeDisplay.getText().toString().substring(0, 2)));
+                detailsMap.put("finish_time", Integer.valueOf(mFinishTimeDisplay.getText().toString().substring(0, 2)));
                 detailsMap.put("lat", mLastChosenLocation.latitude);
                 detailsMap.put("lng", mLastChosenLocation.longitude);
                 detailsMap.put("price", mPrice.getText().toString());
