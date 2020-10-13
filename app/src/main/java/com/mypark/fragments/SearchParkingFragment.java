@@ -89,17 +89,17 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mSelectedMarker != null) {
-                    final Map<String, Object> mDetailsMap = new HashMap<>();
-                    mDetailsMap.put(Defines.TableFields.PARKING_CREATE_START_TIME, mStartTimeDisplay.getText().toString());
-                    mDetailsMap.put(Defines.TableFields.PARKING_CREATE_FINISH_TIME, mFinishTimeDisplay.getText().toString());
-                    mDatabase.child(Defines.TableNames.PARKING_OCCUPIED).child((String) mSelectedMarker.getTag()).child(FirebaseAuth.getInstance().getUid()).setValue(mDetailsMap);
-                    Toast.makeText(getContext(), "The place is rented for you", Toast.LENGTH_SHORT).show();
-                    mListener.onParkingRented();
-
-                } else {
-                    Toast.makeText(getContext(), "Please choose valid place", Toast.LENGTH_SHORT).show();
-                }
+//                if (mSelectedMarker != null) {
+//                    final Map<String, Object> mDetailsMap = new HashMap<>();
+//                    mDetailsMap.put(Defines.TableFields.PARKING_CREATE_START_TIME, mStartTimeDisplay.getText().toString());
+//                    mDetailsMap.put(Defines.TableFields.PARKING_CREATE_FINISH_TIME, mFinishTimeDisplay.getText().toString());
+//                    mDatabase.child(Defines.TableNames.PARKING_OCCUPIED).child((String) mSelectedMarker.getTag()).child(FirebaseAuth.getInstance().getUid()).setValue(mDetailsMap);
+//                    Toast.makeText(getContext(), "The place is rented for you", Toast.LENGTH_SHORT).show();
+//                    mListener.onParkingRented();
+//
+//                } else {
+//                    Toast.makeText(getContext(), "Please choose valid place", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
     }
