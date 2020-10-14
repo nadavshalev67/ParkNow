@@ -23,6 +23,10 @@ public interface RetrofitInterface {
     @POST("/getOwnerSpot")
     Call<List<OwnerSpot>> executeGetOwnerSpot(@Body HashMap<String, Object> map);
 
+    @POST("/deleteParkingSpot")
+    Call<Void> executetDeleteParkingSpot(@Body HashMap<String, Object> map);
+
+
     @POST("/disable_parking")
     Call<Void> executeDisableParking(@Body HashMap<String, Object> map);
 }

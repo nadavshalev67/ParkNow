@@ -16,5 +16,8 @@ public class OwnerSpot {
     public String price;
     @SerializedName("adress")
     public String adress;
-
+    @SerializedName("lng")
+    public double lng;
+    @SerializedName("lat")
+    public double lat;
 }
