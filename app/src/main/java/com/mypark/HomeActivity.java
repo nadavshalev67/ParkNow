@@ -1,13 +1,19 @@
 package com.mypark;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
@@ -18,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mypark.fragments.ActivitytFragmentListener;
+import com.mypark.fragments.ContactUsFragment;
 import com.mypark.fragments.CreateParkingFragment;
 import com.mypark.fragments.DetailsFragment;
 import com.mypark.fragments.HomeFragment;
@@ -33,6 +40,9 @@ public class HomeActivity extends AppCompatActivity implements ActivitytFragment
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private Toolbar toolbar;
+    private ActionBarDrawerToggle mDrawerToggle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +50,29 @@ public class HomeActivity extends AppCompatActivity implements ActivitytFragment
         setContentView(R.layout.home_activity);
         initNavnigationView();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, getIntent().getStringExtra(Defines.Intent.KEY_INTENT_SOURCE) != null ? new DetailsFragment() : new HomeFragment(), "details").commit();
+        toolbar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close) {
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    supportInvalidateOptionsMenu();
+                }
+
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    supportInvalidateOptionsMenu();
+                }
+            };
+        }
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+
+
     }
 
     private void initNavnigationView() {
@@ -101,11 +134,37 @@ public class HomeActivity extends AppCompatActivity implements ActivitytFragment
             }
             case R.id.payment: {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PaymentFragment(), "create").addToBackStack(null).commit();
-
+                break;
+            }
+            case R.id.contact_us: {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ContactUsFragment(), "create").addToBackStack(null).commit();
+                break;
             }
         }
         mDrawerLayout.closeDrawer(Gravity.LEFT, true);
         return true;
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            mDrawerLayout.openDrawer(Gravity.LEFT);
+        }
+        return true;
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+
 }

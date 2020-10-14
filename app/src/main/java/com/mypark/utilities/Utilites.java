@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -35,11 +36,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.gson.Gson;
 import com.mypark.R;
 import com.mypark.fragments.CreateParkingFragment;
 import com.mypark.fragments.SearchParkingFragment;
+import com.mypark.models.CreditCard;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -48,8 +55,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class Utilites {
 
+
+    private static final String MY_PREFS_NAME = "cards";
 
     public static boolean isEmailValid(String email) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
@@ -208,5 +219,24 @@ public class Utilites {
 
     public static int getHours(String clock) {
         return Integer.valueOf(clock.substring(0, 2));
+    }
+
+    public static void saveCardListToSharedPrefence(Context context, List<CreditCard> creditCardList) {
+        Gson gson = new Gson();
+        String json = gson.toJson(creditCardList);
+        SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString("cards", json);
+        editor.apply();
+    }
+
+    public static List<CreditCard> getCardListToSharedPrefence(Context context) throws Exception {
+        String text = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("cards", "[]");
+        JSONArray jsonArray = new JSONArray(text);
+        List<CreditCard> creditCards = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject card = (JSONObject) jsonArray.get(i);
+            creditCards.add(new CreditCard(card.getInt("fourLastDigits"), card.getBoolean("isChecked")));
+        }
+        return creditCards;
     }
 }

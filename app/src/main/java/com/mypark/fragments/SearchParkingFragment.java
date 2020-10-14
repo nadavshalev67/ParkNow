@@ -23,20 +23,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mypark.R;
 import com.mypark.models.AvaliableParking;
 import com.mypark.network.RetrofitInst;
-import com.mypark.network.RetrofitInterface;
 import com.mypark.utilities.Defines;
 import com.mypark.utilities.Utilites;
 import com.mypark.utilities.WorkaroundMapFragment;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,9 +41,6 @@ import retrofit2.Response;
 
 
 public class SearchParkingFragment extends Fragment implements OnMapReadyCallback {
-
-    ;
-
 
     private View mFragment;
     private GoogleMap mGoogleMap;
@@ -178,14 +172,18 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
                     List<AvaliableParking> list = response.body();
                     onSpotsUpdated(list);
                 } else {
-                    Toast.makeText(getContext(), "not good", Toast.LENGTH_SHORT).show();
+                    if (getActivity() != null && getActivity().getBaseContext() != null) {
+                        Toast.makeText(getActivity().getBaseContext(), "not good", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<List<AvaliableParking>> call, Throwable t) {
                 mProgressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(getContext(), "not good", Toast.LENGTH_SHORT).show();
+                if (getActivity() != null && getActivity().getBaseContext() != null) {
+                    Toast.makeText(getActivity().getBaseContext(), "not good", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

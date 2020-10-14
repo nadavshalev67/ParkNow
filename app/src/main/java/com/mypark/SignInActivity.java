@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.mypark.utilities.Utilites;
 public class SignInActivity extends AppCompatActivity {
 
     EditText mEmail, mPassword;
+    TextView mForgotMyPassword;
     Button mConnectButton;
 
     @Override
@@ -32,6 +34,28 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        mForgotMyPassword = findViewById(R.id.txt_forget_psw);
+        mForgotMyPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = mEmail.getText().toString();
+                if (TextUtils.isEmpty(email) || !Utilites.isEmailValid(email)) {
+                    Toast.makeText(getBaseContext(), "Invalid email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(SignInActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(SignInActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
         mEmail = findViewById(R.id.username_enter_txt);
         mPassword = findViewById(R.id.psw_enter_txt);
         mConnectButton = findViewById(R.id.reg_buttoun);
