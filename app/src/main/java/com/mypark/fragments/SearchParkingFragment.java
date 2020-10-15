@@ -23,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mypark.R;
@@ -87,6 +88,7 @@ public class SearchParkingFragment extends Fragment implements OnMapReadyCallbac
                     final HashMap<String, Object> mDetailsMap = new HashMap<>();
                     AvaliableParking avaliableParking = (AvaliableParking) mSelectedMarker.getTag();
                     mDetailsMap.put("id", avaliableParking.id);
+                    mDetailsMap.put("uuid_taken", FirebaseAuth.getInstance().getUid());
                     Call<Void> call = RetrofitInst.getInstance().executeDisableParking(mDetailsMap);
                     call.enqueue(new Callback<Void>() {
                         @Override
