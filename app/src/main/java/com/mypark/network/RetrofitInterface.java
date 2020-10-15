@@ -1,6 +1,7 @@
 package com.mypark.network;
 
 import com.mypark.models.AvaliableParking;
+import com.mypark.models.MyRentedParking;
 import com.mypark.models.OwnerSpot;
 
 
@@ -29,4 +30,7 @@ public interface RetrofitInterface {
 
     @POST("/disable_parking")
     Call<Void> executeDisableParking(@Body HashMap<String, Object> map);
+
+    @POST("/getSpotReserved")
+    Call<List<MyRentedParking>> executeGetSpotReserverd(@Body HashMap<String, Object> map);
 }

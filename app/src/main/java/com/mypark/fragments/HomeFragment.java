@@ -14,11 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mypark.R;
+import com.mypark.models.MyRentedParking;
 import com.mypark.models.OwnerSpot;
 import com.mypark.network.RetrofitInst;
 import com.mypark.recycler.RecyclerViewOwnerParkAdapter;
+import com.mypark.recycler.RecylerViewMyRentedParkings;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,28 +30,60 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private View mFragment;
-    private ActivitytFragmentListener mListener;
-    private RecyclerViewOwnerParkAdapter mAdapter;
-    private RecyclerView mRecyclerView;
-    private ProgressBar mProgressBar;
+    private RecyclerViewOwnerParkAdapter mAdapterFirst;
+    private RecyclerView mRecyclerViewFirst;
+    private ProgressBar mProgresBarFirst;
 
+
+    private RecyclerView mRecyclerViewSecond;
+    private ProgressBar mProgresBarSecond;
+    private RecylerViewMyRentedParkings mAdapterSecond;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragment = inflater.inflate(R.layout.home_fragment, container, false);
         initRecyclerOwnerParking();
-
+        initRecyclerMyRenteredParking();
         return mFragment;
     }
 
+    private void initRecyclerMyRenteredParking() {
+        mRecyclerViewSecond = mFragment.findViewById(R.id.recyler_view_my_rented_spots);
+        mRecyclerViewSecond.setVisibility(View.INVISIBLE);
+        mProgresBarSecond = mFragment.findViewById(R.id.progress_bar_two);
+        mRecyclerViewSecond.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapterSecond = new RecylerViewMyRentedParkings(getContext());
+        mRecyclerViewSecond.setAdapter(mAdapterSecond);
+        String uid = FirebaseAuth.getInstance().getUid();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("uuid_taken", uid);
+        Call<List<MyRentedParking>> listCall = RetrofitInst.getInstance().executeGetSpotReserverd(hashMap);
+        listCall.enqueue(new Callback<List<MyRentedParking>>() {
+            @Override
+            public void onResponse(Call<List<MyRentedParking>> call, Response<List<MyRentedParking>> response) {
+                mAdapterSecond.setNewList(response.body());
+                mProgresBarSecond.setVisibility(View.INVISIBLE);
+                mRecyclerViewSecond.setVisibility(View.VISIBLE);
+                mAdapterSecond.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<MyRentedParking>> call, Throwable t) {
+                mProgresBarSecond.setVisibility(View.INVISIBLE);
+                mRecyclerViewSecond.setVisibility(View.VISIBLE);
+                mAdapterSecond.notifyDataSetChanged();
+            }
+        });
+    }
+
     private void initRecyclerOwnerParking() {
-        mRecyclerView = mFragment.findViewById(R.id.recyler_view_my_parking_spot);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mProgressBar = mFragment.findViewById(R.id.progress_bar);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
-        mAdapter = new RecyclerViewOwnerParkAdapter(getContext());
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerViewFirst = mFragment.findViewById(R.id.recyler_view_my_parking_spot);
+        mRecyclerViewFirst.setVisibility(View.INVISIBLE);
+        mProgresBarFirst = mFragment.findViewById(R.id.progress_bar);
+        mRecyclerViewFirst.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapterFirst = new RecyclerViewOwnerParkAdapter(getContext());
+        mRecyclerViewFirst.setAdapter(mAdapterFirst);
         String uid = FirebaseAuth.getInstance().getUid();
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("uuid", uid);
@@ -58,17 +91,17 @@ public class HomeFragment extends Fragment {
         listCall.enqueue(new Callback<List<OwnerSpot>>() {
             @Override
             public void onResponse(Call<List<OwnerSpot>> call, Response<List<OwnerSpot>> response) {
-                mAdapter.setNewList(response.body());
-                mProgressBar.setVisibility(View.INVISIBLE);
-                mRecyclerView.setVisibility(View.VISIBLE);
-                mAdapter.notifyDataSetChanged();
+                mAdapterFirst.setNewList(response.body());
+                mProgresBarFirst.setVisibility(View.INVISIBLE);
+                mRecyclerViewFirst.setVisibility(View.VISIBLE);
+                mAdapterFirst.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Call<List<OwnerSpot>> call, Throwable t) {
-                mProgressBar.setVisibility(View.INVISIBLE);
-                mRecyclerView.setVisibility(View.VISIBLE);
-                mAdapter.notifyDataSetChanged();
+                mProgresBarFirst.setVisibility(View.INVISIBLE);
+                mRecyclerViewFirst.setVisibility(View.VISIBLE);
+                mAdapterFirst.notifyDataSetChanged();
             }
         });
     }
@@ -76,6 +109,5 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mListener = (ActivitytFragmentListener) getContext();
     }
 }

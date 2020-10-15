@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/recyler_view_my_parking_spot"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+
         android:text="Your's Rented parking spots"
         android:textStyle="bold" />
 
@@ -60,6 +60,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyler_view_my_rented_spots"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
         android:layout_below="@+id/separator2" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/second_header"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
 </RelativeLayout>
