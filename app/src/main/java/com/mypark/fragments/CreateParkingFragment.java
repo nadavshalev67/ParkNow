@@ -100,6 +100,7 @@ public class CreateParkingFragment extends Fragment implements OnMapReadyCallbac
                     Toast.makeText(getContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                mCreateButton.setEnabled(false);
                 final HashMap<String, Object> detailsMap = new HashMap<>();
                 detailsMap.put("start_time", Integer.valueOf(mStartTimeDisplay.getText().toString().substring(0, 2)));
                 detailsMap.put("finish_time", Integer.valueOf(mFinishTimeDisplay.getText().toString().substring(0, 2)));
@@ -115,10 +116,12 @@ public class CreateParkingFragment extends Fragment implements OnMapReadyCallbac
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         Toast.makeText(getContext(), "Parking created", Toast.LENGTH_SHORT).show();
                         mListener.onParkingCreated();
+                        mCreateButton.setEnabled(true);
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
+                        mCreateButton.setEnabled(true);
                         Toast.makeText(getContext(), "Error when saving the details", Toast.LENGTH_SHORT).show();
                     }
                 });
